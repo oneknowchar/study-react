@@ -2,22 +2,14 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  let title = '강남 우동 맛집zz';
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <h4 className="black-nav" style={{color:'red', fontSize:'50px'}}>it's blog</h4>
+      </div>
+      <h4>{ title }</h4>
     </div>
   );
 }
