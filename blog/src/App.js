@@ -6,6 +6,7 @@ function App() {
   let [title, titleFunc] = useState(['남자코트 추천', '강남 우동 맛집', '고양이와 강아지']);
   let [likeNum, likeNumFunc] = useState([0,5,0]);
   let [modal, setModal] = useState(false);
+  let [modalTitle, setModalTitle] = useState(0);
   return (
     <div className="App">
       <div>
@@ -26,7 +27,10 @@ function App() {
         title.map(function(obj, i){
           return (
             <div className='list' key={i}>
-              <h4 onClick={()=>{setModal(modal = !modal)}}>
+              <h4 onClick={()=>{setModal(modal = true)
+                setModalTitle(i)
+                console.log(modalTitle)
+              }}>
                 {title[i]} 
                 <span onClick={()=>{
                   let copy = [...likeNum];
@@ -41,7 +45,11 @@ function App() {
       }
 
       {
-        modal ? <Modal color="gold" title={title}  setTitle={()=>{
+        modal ? <Modal 
+        color="gold" 
+        title={title}
+        modalTitle={modalTitle}
+        setTitle={()=>{
           let copy  = [...title];
           copy[0] = '여자 코트 추천12';
           titleFunc(copy);
@@ -55,7 +63,7 @@ function App() {
 function Modal(props ) {
   return (
     <div className="modal" style={{background : props.color}}  >
-      <h4>{props.title[0]}</h4>
+      <h4>{props.title[props.modalTitle]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
       <button onClick={props.setTitle}>글수정</button>
