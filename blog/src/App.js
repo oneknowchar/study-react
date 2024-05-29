@@ -7,6 +7,7 @@ function App() {
   let [likeNum, likeNumFunc] = useState([0,5,0]);
   let [modal, setModal] = useState(false);
   let [modalTitle, setModalTitle] = useState(0);
+  let [inputVal, inputValFunc] = useState('');
   return (
     <div className="App">
       <div>
@@ -27,12 +28,13 @@ function App() {
         title.map(function(obj, i){
           return (
             <div className='list' key={i}>
-              <h4 onClick={()=>{setModal(modal = true)
+              <h4 onClick={()=>{setModal(modal = !modal)
                 setModalTitle(i)
                 console.log(modalTitle)
               }}>
                 {title[i]} 
-                <span onClick={()=>{
+                <span onClick={(e)=>{
+                  e.stopPropagation(); 
                   let copy = [...likeNum];
                   copy[i] = copy[i]+1;
                   likeNumFunc(copy);
@@ -43,6 +45,8 @@ function App() {
           )
         })
       }
+
+      <input type='text' onChange={ (e)=>{inputValFunc(e.target.value); console.log(inputVal)}} />
 
       {
         modal ? <Modal 
