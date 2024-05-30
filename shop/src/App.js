@@ -1,4 +1,4 @@
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Button, Navbar, Container, Nav } from 'react-bootstrap';
 import './App.css';
 import { useState } from 'react';
 import data from './data.js'
@@ -7,7 +7,7 @@ import Detail from './pages/Detail.js';
 import Event from './pages/Event.js';
 function App() {
 
-  let [shoese] = useState(data);
+  let [shoes, shoesFunc] = useState(data);
   let navigate = useNavigate();
   return (
     <div className="App">
@@ -25,8 +25,15 @@ function App() {
               //to prevet Re-rendering html
             */}
             <Nav.Link onClick={()=>{ navigate('/')}}>Home</Nav.Link> 
-            <Nav.Link onClick={()=>{ navigate('/detail')}}>Detail</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/detail/0')}}>Detail</Nav.Link>
             <Nav.Link onClick={()=>{ navigate('/event')}}>Event</Nav.Link>
+
+            <Button variant="light" onClick={()=>{
+              let copy = [...shoes];
+              copy.sort((a, b) => b.title.toLowerCase() > a.title.toLowerCase() ? -1 : 1);
+              shoesFunc(copy);
+            }}>가나다 정렬
+            </Button>
           </Nav>
         </Container>
       </Navbar>
@@ -38,9 +45,9 @@ function App() {
             <div className="container">
               <div className="row">
                 {
-                  shoese ? shoese.map((shoese, i)=>{
+                  shoes ? shoes.map((shoes, i)=>{
                     return (
-                      <Card shoese={shoese}></Card>
+                      <Card shoes={shoes} key={i}></Card>
                     )
                   }) : null
                 }
@@ -48,7 +55,7 @@ function App() {
             </div>
           </div>
         } /> 
-        <Route path="/detail" element={ <Detail/> } />
+        <Route path="/detail/:id" element={ <Detail shoes={shoes}/> } />
         <Route path="/about" element={ <div>어바웃페이지임</div> } />
         <Route path='/event' element={<Event/>}>
           <Route index element={<Navigate to='one' />} /> {/* 기본 설정으로 'one'으로 리다이렉트 */}
@@ -64,11 +71,13 @@ function App() {
 
 //
 function Card(props){
+  let navigate = useNavigate();
+  
   return (
-    <div className="col-md-4">
-      <img alt={props.shoese.id} src={props.shoese.image} width="80%" />
-      <h4>{props.shoese.title}</h4>
-      <p>{props.shoese.content}</p>
+    <div className="col-md-4 pointer" onClick={()=>{navigate(`/detail/${props.shoes.id}`)}}>
+      <img alt={props.shoes.id} src={props.shoes.image} width="80%" />
+      <h4>{props.shoes.title}</h4>
+      <p>{props.shoes.content}</p>
     </div>
   );
 }
