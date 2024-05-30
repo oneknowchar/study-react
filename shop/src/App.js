@@ -1,8 +1,10 @@
 import { Button, Navbar, Container, Nav } from 'react-bootstrap';
 
 import './App.css';
-
+import { useState } from 'react';
+import data from './data.js'
 function App() {
+  let [shoese] = useState(data);
   return (
     <div className="App">
       <Navbar bg="primary" data-bs-theme="dark">
@@ -18,23 +20,26 @@ function App() {
       <div className='main-bg'></div>
       <div className="container">
         <div className="row">
-          <div className="col-md-4">
-            <img alt='img1' src="https://codingapple1.github.io/shop/shoes1.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
-          <div className="col-md-4">
-            <img alt='img2' src="https://codingapple1.github.io/shop/shoes2.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
-          <div className="col-md-4">
-            <img alt='img3' src="https://codingapple1.github.io/shop/shoes3.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
+          {
+            shoese ? shoese.map((shoese, i)=>{
+              return (
+                <Card shoese={shoese}></Card>
+              )
+            }) : null
+          }
         </div>
       </div>
+    </div>
+  );
+}
+
+//
+function Card(props){
+  return (
+    <div className="col-md-4">
+      <img alt={props.shoese.id} src={props.shoese.image} width="80%" />
+      <h4>{props.shoese.title}</h4>
+      <p>{props.shoese.content}</p>
     </div>
   );
 }
