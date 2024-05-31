@@ -5,15 +5,18 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 //로그인 정보나 기타등등 많은 곳에서 사용할 데이터를 스토어에 저장
 let user = createSlice({
   name : 'user',
-  initialState : 'han',
+  initialState : {name : 'han' , age : 31},
   reducers : {
     changeName(state){
-      return 'john ' + state;
+      state.name ='parkkk'
+    },
+    updateAge(state, a){
+      state.age += a.payload;
     }
   }
 })
 
-export let { changeName } = user.actions 
+export let { changeName, updateAge } = user.actions 
 
 let stock = createSlice({
   name : 'stock',
