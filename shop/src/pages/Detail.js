@@ -1,7 +1,8 @@
-import userEvent from "@testing-library/user-event";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {Nav} from 'react-bootstrap'
+import { addCart } from "../store/cartSlice";
+import { useDispatch } from "react-redux";
 
 function Detail(props) {
 
@@ -12,6 +13,7 @@ function Detail(props) {
   let [priceAlert, priceAlertFunc] = useState(false)
   let [price, setPrice] = useState(0);
   let [tap, setTap] = useState(0);
+  let dispatch = useDispatch();
   
   //It works after rendering HTML, Use it when some works take long time
   //Goal : Show HTML first, Rapid service experience for user
@@ -49,13 +51,13 @@ function Detail(props) {
               priceAlert === true ? <div className="alert alert-danger m-2"> 경고 : 숫자만 입력하세요. </div>  : null
             }
           </div>
-          <button className="btn btn-danger">주문하기</button>
+          <button className="btn btn-danger" onClick={()=>{dispatch(addCart(item))}}>주문하기</button>
           
         </div>
 
         <Nav variant="tabs"  defaultActiveKey="link0">
           <Nav.Item>
-            <Nav.Link eventKey="link0" onClick={()=>{setTap(0); console.log(tap)}}>버튼0</Nav.Link>
+            <Nav.Link eventKey="link0" onClick={()=>{setTap(0)}}>버튼0</Nav.Link>
           </Nav.Item>
           <Nav.Item>
             <Nav.Link eventKey="link1" onClick={()=>{setTap(1)}}>버튼1</Nav.Link>
