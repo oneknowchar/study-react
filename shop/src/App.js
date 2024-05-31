@@ -5,9 +5,11 @@ import data from './data.js'
 import {Routes, Route, useNavigate, Navigate} from 'react-router-dom'
 import Detail from './pages/Detail.js';
 import Event from './pages/Event.js';
+import axios from 'axios';
 function App() {
 
   let [shoes, shoesFunc] = useState(data);
+  let [axiosdata, axiosdataFunc] = useState(2);
   let navigate = useNavigate();
   return (
     <div className="App">
@@ -52,6 +54,26 @@ function App() {
                   }) : null
                 }
               </div>
+              {
+                axiosdata > 3 ? null :
+                  <button onClick={()=>{
+                    axios.get(`https://codingapple1.github.io/shop/data${axiosdata}.json`)
+                    .then((res)=>{
+                      console.log(res.data);
+                      let copy = [ ...shoes, ...res.data];
+
+                      axiosdataFunc(axiosdata+1);
+
+                      shoesFunc(copy);
+                    })
+                    .catch(()=>{
+                      alert('no more items')
+                    })
+                    .finally(()=>{
+                      console.log('finally')
+                    })
+                  }}>아이템 추가</button>
+            }
             </div>
           </div>
         } /> 
