@@ -5,6 +5,7 @@ import data from './data.js'
 import {Routes, Route, useNavigate, Navigate} from 'react-router-dom'
 import Detail from './pages/Detail.js';
 import Event from './pages/Event.js';
+import Cart from './pages/Cart.js'
 import axios from 'axios';
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
             <Nav.Link onClick={()=>{ navigate('/')}}>Home</Nav.Link> 
             <Nav.Link onClick={()=>{ navigate('/detail/0')}}>Detail</Nav.Link>
             <Nav.Link onClick={()=>{ navigate('/event')}}>Event</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/cart')}}>Cart</Nav.Link>
 
             <Button variant="light" onClick={()=>{
               let copy = [...shoes];
@@ -84,6 +86,7 @@ function App() {
           <Route path='one' element={<div>양배추 즙</div>} />
           <Route path='two' element={<div>호박 즙</div>} />
         </Route>
+        <Route path='/cart' element={<Cart></Cart>} />
         <Route path='*' element={<div>404 Error</div>} />
       </Routes>
 
