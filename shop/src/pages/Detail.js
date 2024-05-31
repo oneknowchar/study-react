@@ -1,6 +1,7 @@
 import userEvent from "@testing-library/user-event";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import {Nav} from 'react-bootstrap'
 
 function Detail(props) {
 
@@ -10,6 +11,8 @@ function Detail(props) {
   let [alert, alertFunc] = useState(true)
   let [priceAlert, priceAlertFunc] = useState(false)
   let [price, setPrice] = useState(0);
+  let [tap, setTap] = useState(0);
+  
   //It works after rendering HTML, Use it when some works take long time
   //Goal : Show HTML first, Rapid service experience for user
   useEffect(()=>{
@@ -49,6 +52,21 @@ function Detail(props) {
           <button className="btn btn-danger">주문하기</button>
           
         </div>
+
+        <Nav variant="tabs"  defaultActiveKey="link0">
+          <Nav.Item>
+            <Nav.Link eventKey="link0" onClick={()=>{setTap(0); console.log(tap)}}>버튼0</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link1" onClick={()=>{setTap(1)}}>버튼1</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link2"onClick={()=>{setTap(2)}}>버튼2</Nav.Link>
+          </Nav.Item>
+        </Nav>
+
+        <TapContent tap={tap}></TapContent>
+
       </div>
     </div> 
   )
@@ -73,6 +91,17 @@ function Timer(props){
   return (
     <span>{timer}</span>
   )
+}
+
+function TapContent({tap}){
+  console.log(tap);
+  if(tap == 0 ){
+    return <div>content0</div>
+  }else if(tap == 1){
+    return <div>content1</div>
+  }else if(tap == 2){
+    return <div>content2</div>
+  }
 }
 
 export default Detail;
