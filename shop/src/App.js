@@ -1,13 +1,18 @@
+import { useState, Suspense, useEffect, lazy } from 'react';
 import { Button, Navbar, Container, Nav, Offcanvas } from 'react-bootstrap';
 import './App.css';
-import { useState, useEffect } from 'react';
 import data from './data.js'
 import {Routes, Route, useNavigate, Navigate} from 'react-router-dom'
-import Detail from './pages/Detail.js';
-import Event from './pages/Event.js';
-import Cart from './pages/Cart.js'
-import axios from 'axios';
 import { useQuery } from 'react-query';
+import axios from 'axios';
+// import Detail from './pages/Detail.js';
+// import Cart from './pages/Cart.js'
+// import Event from './pages/Event.js';
+// + <Suspense/>(must)
+const Detail = lazy(()=> import('./pages/Detail.js'))
+const Cart = lazy(()=> import('./pages/Cart.js'))
+const Event = lazy(()=> import('./pages/Event.js'))
+
 function App() {
   //react-bootstrap offcanvas
   const [show, setShow] = useState(false);
@@ -105,53 +110,55 @@ function App() {
           </Nav>
         </Container>
       </Navbar>
-
-      <Routes>
-        <Route path="/" element={ 
-          <div>
-            <div className='main-bg'></div>
-            <div className="container">
-              <div className="row">
+      
+      <Suspense fallback={<div>로딩중임</div>}>
+        <Routes>
+          <Route path="/" element={ 
+            <div>
+              <div className='main-bg'></div>
+              <div className="container">
+                <div className="row">
+                  {
+                    shoes ? shoes.map((shoes, i)=>{
+                      return (
+                        <Card shoes={shoes} key={i}></Card>
+                      )
+                    }) : null
+                  }
+                </div>
                 {
-                  shoes ? shoes.map((shoes, i)=>{
-                    return (
-                      <Card shoes={shoes} key={i}></Card>
-                    )
-                  }) : null
-                }
+                  axiosdata > 3 ? null :
+                    <button onClick={()=>{
+                      axios.get(`https://codingapple1.github.io/shop/data${axiosdata}.json`)
+                      .then((res)=>{
+                        let copy = [ ...shoes, ...res.data];
+
+                        axiosdataFunc(axiosdata+1);
+
+                        shoesFunc(copy);
+                      })
+                      .catch(()=>{
+                        alert('no more items')
+                      })
+                      .finally(()=>{
+                        console.log('finally')
+                      })
+                    }}>아이템 추가</button>
+              }
               </div>
-              {
-                axiosdata > 3 ? null :
-                  <button onClick={()=>{
-                    axios.get(`https://codingapple1.github.io/shop/data${axiosdata}.json`)
-                    .then((res)=>{
-                      let copy = [ ...shoes, ...res.data];
-
-                      axiosdataFunc(axiosdata+1);
-
-                      shoesFunc(copy);
-                    })
-                    .catch(()=>{
-                      alert('no more items')
-                    })
-                    .finally(()=>{
-                      console.log('finally')
-                    })
-                  }}>아이템 추가</button>
-            }
             </div>
-          </div>
-        } /> 
-        <Route path="/detail/:id" element={ <Detail shoes={shoes} watched={watched} setWatched={setWatched}/> } />
-        <Route path="/about" element={ <div>어바웃페이지임</div> } />
-        <Route path='/event' element={<Event/>}>
-          <Route index element={<Navigate to='one' />} /> {/* 기본 설정으로 'one'으로 리다이렉트 */}
-          <Route path='one' element={<div>양배추 즙</div>} />
-          <Route path='two' element={<div>호박 즙</div>} />
-        </Route>
-        <Route path='/cart' element={<Cart></Cart>} />
-        <Route path='*' element={<div>404 Error</div>} />
-      </Routes>
+          } /> 
+          <Route path="/detail/:id" element={ <Detail shoes={shoes} watched={watched} setWatched={setWatched}/> } />
+          <Route path="/about" element={ <div>어바웃페이지임</div> } />
+          <Route path='/event' element={<Event/>}>
+            <Route index element={<Navigate to='one' />} /> {/* 기본 설정으로 'one'으로 리다이렉트 */}
+            <Route path='one' element={<div>양배추 즙</div>} />
+            <Route path='two' element={<div>호박 즙</div>} />
+          </Route>
+          <Route path='/cart' element={<Cart></Cart>} />
+          <Route path='*' element={<div>404 Error</div>} />
+        </Routes>
+      </Suspense>
 
     </div>
   );
