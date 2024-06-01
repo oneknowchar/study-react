@@ -4,19 +4,23 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-
+import { QueryClient, QueryClientProvider } from "react-query"  //1번
 import { Provider } from 'react-redux';
 import store from './store.js'
 
 
+const queryClient = new QueryClient()   //2번
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
+  //3번
+  <QueryClientProvider client={queryClient}>  
     <Provider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>
+  </QueryClientProvider>
   // </React.StrictMode>
 );
 

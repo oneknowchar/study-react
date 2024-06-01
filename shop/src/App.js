@@ -7,17 +7,26 @@ import Detail from './pages/Detail.js';
 import Event from './pages/Event.js';
 import Cart from './pages/Cart.js'
 import axios from 'axios';
+import { useQuery } from 'react-query';
 function App() {
-
+  //react-bootstrap offcanvas
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  //router
   let navigate = useNavigate();
 
   let [shoes, shoesFunc] = useState(data);
   let [axiosdata, axiosdataFunc] = useState(2);
   let [watched, setWatched] = useState([]);
-  //react-bootstrap offcanvas
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  
+  let result = useQuery('작명', ()=>
+    axios.get('https://codingapple1.github.io/userdata.json')
+    .then((a)=>{ return a.data })
+  )
+
+  console.log('se', result);
+
   useEffect(()=>{
     let watched = JSON.parse(localStorage.getItem('watched'));
     
@@ -48,6 +57,7 @@ function App() {
             <Nav.Link onClick={()=>{ navigate('/detail/0')}}>Detail</Nav.Link>
             <Nav.Link onClick={()=>{ navigate('/event')}}>Event</Nav.Link>
             <Nav.Link onClick={()=>{ navigate('/cart')}}>Cart</Nav.Link>
+            
 
             <Button variant="light" onClick={()=>{
               let copy = [...shoes];
@@ -87,8 +97,11 @@ function App() {
                 }
               </Offcanvas>
             </>
-
-
+          </Nav>
+          <Nav className='ms-auto'>
+            { 
+              result.isLoading ? '로딩중' : result.data.name
+            }
           </Nav>
         </Container>
       </Navbar>
