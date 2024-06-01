@@ -1,6 +1,6 @@
-import { Button, Navbar, Container, Nav } from 'react-bootstrap';
+import { Button, Navbar, Container, Nav, Offcanvas } from 'react-bootstrap';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import data from './data.js'
 import {Routes, Route, useNavigate, Navigate} from 'react-router-dom'
 import Detail from './pages/Detail.js';
@@ -9,9 +9,26 @@ import Cart from './pages/Cart.js'
 import axios from 'axios';
 function App() {
 
+  let navigate = useNavigate();
+
   let [shoes, shoesFunc] = useState(data);
   let [axiosdata, axiosdataFunc] = useState(2);
-  let navigate = useNavigate();
+  let [watched, setWatched] = useState([]);
+  //react-bootstrap offcanvas
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  useEffect(()=>{
+    let watched = JSON.parse(localStorage.getItem('watched'));
+    
+    if(!watched){
+      watched = [];
+      localStorage.setItem('watched', JSON.stringify(watched));
+    }
+
+    setWatched(watched);
+  }, []);
+
   return (
     <div className="App">
       <Navbar bg="primary" data-bs-theme="dark">
@@ -36,8 +53,42 @@ function App() {
               let copy = [...shoes];
               copy.sort((a, b) => b.title.toLowerCase() > a.title.toLowerCase() ? -1 : 1);
               shoesFunc(copy);
-            }}>가나다 정렬
+            }}>Order by Name
             </Button>
+            
+            <>
+              <Button className='btn-dark ml-2' onClick={handleShow}>
+                Recent view
+              </Button>
+
+              <Offcanvas show={show} onHide={handleClose} placement={'end'}>
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title>Recent view items </Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                  {
+                    watched.length === 0 
+                    ? <div className="alert alert-warning"> no watched item </div> 
+                    :watched.map((item, i) =>{
+                      return (
+                        <div key={i}>{item.title}</div>
+                      )
+                    })
+                    
+                  }
+                </Offcanvas.Body>
+                {
+                  watched.length > 0 
+                  ? <button className="btn btn-danger" onClick={()=>{
+                    setWatched([]);
+                    localStorage.setItem('watched', JSON.stringify([]));
+                  }}>Reset</button>
+                  : null
+                }
+              </Offcanvas>
+            </>
+
+
           </Nav>
         </Container>
       </Navbar>
@@ -61,7 +112,6 @@ function App() {
                   <button onClick={()=>{
                     axios.get(`https://codingapple1.github.io/shop/data${axiosdata}.json`)
                     .then((res)=>{
-                      console.log(res.data);
                       let copy = [ ...shoes, ...res.data];
 
                       axiosdataFunc(axiosdata+1);
@@ -79,7 +129,7 @@ function App() {
             </div>
           </div>
         } /> 
-        <Route path="/detail/:id" element={ <Detail shoes={shoes}/> } />
+        <Route path="/detail/:id" element={ <Detail shoes={shoes} watched={watched} setWatched={setWatched}/> } />
         <Route path="/about" element={ <div>어바웃페이지임</div> } />
         <Route path='/event' element={<Event/>}>
           <Route index element={<Navigate to='one' />} /> {/* 기본 설정으로 'one'으로 리다이렉트 */}

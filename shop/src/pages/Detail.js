@@ -4,10 +4,10 @@ import {Nav} from 'react-bootstrap'
 import { addCart } from "../store/cartSlice";
 import { useDispatch } from "react-redux";
 
-function Detail(props) {
+function Detail({shoes, watched, setWatched}) {
 
   let {id} = useParams();
-  let item = props.shoes.find((x)=> x.id === Number(id));
+  let item = shoes.find((x)=> x.id === Number(id));
   let [count, countFunc] = useState(0);
   let [alert, alertFunc] = useState(true)
   let [priceAlert, priceAlertFunc] = useState(false)
@@ -19,7 +19,6 @@ function Detail(props) {
   //Goal : Show HTML first, Rapid service experience for user
   useEffect(()=>{
     let a = setTimeout(()=>{alertFunc(false)}, 1000 * 60 * 10);
-
     return ()=>{ clearTimeout(a); }
   },[]);
 
@@ -28,7 +27,16 @@ function Detail(props) {
     
     return ()=>{ priceAlertFunc(false); }
   },[price]);
-
+  
+  useEffect(()=>{
+    let findItem = watched.find(x=>x.id == id);
+    if(!findItem){
+      let copy = [...watched];
+      copy.unshift(item);
+      setWatched(copy)
+      localStorage.setItem('watched', JSON.stringify(copy));
+    }
+  },[]);
 
   return (
     <div className="container">
@@ -96,7 +104,6 @@ function Timer(props){
 }
 
 function TapContent({tap}){
-  console.log(tap);
   if(tap == 0 ){
     return <div>content0</div>
   }else if(tap == 1){
