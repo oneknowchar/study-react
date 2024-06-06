@@ -5,6 +5,8 @@ import Main from './pages/Main.js';
 import Navbars from './layout/Navbars';
 import Board from './pages/Board.js';
 import Todo from './pages/Todo.js';
+import Insert from './components/todo/Insert.js';
+import List from './components/todo/List.js';
 
 const App = () => {
   return (
@@ -13,7 +15,15 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/average" element={<Average />} />
-        <Route path="/todo" element={<Todo />} />
+        <Route
+          path="/todo"
+          element={
+            <Todo>
+              <Insert />
+              <List />
+            </Todo>
+          }
+        />
         <Route path="/board" element={<Board />} />
       </Routes>
     </div>
