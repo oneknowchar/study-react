@@ -19,6 +19,12 @@ const Navbars = () => {
               Average
             </Nav.Link>
             <Nav.Link
+              onClick={() => navigate('/todo')}
+              className={location.pathname === '/average' ? 'active' : ''}
+            >
+              Todo
+            </Nav.Link>
+            <Nav.Link
               onClick={() => navigate('/board')}
               className={location.pathname === '/board' ? 'active' : ''}
             >
