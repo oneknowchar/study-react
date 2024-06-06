@@ -5,7 +5,7 @@ import {
   MdCheckBox,
   MdRemoveCircleOutline,
 } from 'react-icons/md';
-const ListItem = () => {
+const TodoListItem = () => {
   return (
     <div className="TodoListItem">
       <div className="checkbox">
@@ -19,4 +19,4 @@ const ListItem = () => {
   );
 };
 
-export default ListItem;
+export default TodoListItem;

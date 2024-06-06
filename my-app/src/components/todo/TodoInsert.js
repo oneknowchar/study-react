@@ -2,7 +2,7 @@ import React from 'react';
 import '../../../src/pages/Todo.css';
 import { MdAdd } from 'react-icons/md';
 
-const Insert = () => {
+const TodoInsert = () => {
   return (
     <form className="TodoInsert">
       <input type="text" placeholder="할 일을 입력하세요." />
@@ -13,4 +13,4 @@ const Insert = () => {
   );
 };
 
-export default Insert;
+export default TodoInsert;

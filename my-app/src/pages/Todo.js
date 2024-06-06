@@ -1,5 +1,7 @@
 import React from 'react';
 import './Todo.css';
+import TodoInsert from '../components/todo/TodoInsert.js';
+import TodoList from '../components/todo/TodoList.js';
 const Todo = ({ children }) => {
   console.log(children);
   return (
@@ -9,7 +11,10 @@ const Todo = ({ children }) => {
       </a>
       <div className="Todo">
         <div className="app-title">일정 관리</div>
-        <div className="content">{children}</div>
+        <div className="content">
+          <TodoInsert />
+          <TodoList />
+        </div>
       </div>
     </div>
   );
