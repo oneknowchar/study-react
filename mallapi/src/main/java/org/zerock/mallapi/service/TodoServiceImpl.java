@@ -22,4 +22,28 @@ public class TodoServiceImpl implements TodoService {
 		return entityToDTO(todo);
 	}
 
+	@Override
+	public Long register(TodoDTO dto) {
+
+		Todo result = todoRepository.save(dtoToEntity(dto)); // insert, update 모두 save(E);
+
+		return result.getTno();
+	}
+
+	@Override
+	public void modify(TodoDTO dto) {
+		Todo todo = todoRepository.findById(dto.getTno()).orElseThrow();
+		todo.setTitle(dto.getTitle());
+		todo.setContent(dto.getContent());
+		todo.setComplete(dto.isComplete());
+		todo.setDueDate(dto.getDueDate());
+
+		todoRepository.save(todo); // insert, update 모두 save(E);
+	}
+
+	@Override
+	public void remove(Long tno) {
+		todoRepository.deleteById(tno);
+	}
+
 }

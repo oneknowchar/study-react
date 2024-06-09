@@ -6,6 +6,12 @@ import org.zerock.mallapi.dto.TodoDTO;
 public interface TodoService {
 	TodoDTO get(Long tno);
 	
+	Long register(TodoDTO dto);
+	
+	void modify(TodoDTO dto);
+	
+	void remove(Long tno);
+	
 	//자바 8버전 이후 default를 추가해서 기능이나 메서드를 선언한다.
 	default TodoDTO entityToDTO(Todo todo) {
 		return TodoDTO.builder()
