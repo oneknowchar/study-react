@@ -1,6 +1,8 @@
 package org.zerock.mallapi.service;
 
 import org.zerock.mallapi.domain.Todo;
+import org.zerock.mallapi.dto.PageRequestDTO;
+import org.zerock.mallapi.dto.PageResponseDTO;
 import org.zerock.mallapi.dto.TodoDTO;
 
 public interface TodoService {
@@ -11,6 +13,8 @@ public interface TodoService {
 	void modify(TodoDTO dto);
 	
 	void remove(Long tno);
+	
+	PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO);
 	
 	//자바 8버전 이후 default를 추가해서 기능이나 메서드를 선언한다.
 	default TodoDTO entityToDTO(Todo todo) {
