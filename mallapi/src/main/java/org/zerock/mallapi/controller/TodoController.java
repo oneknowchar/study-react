@@ -1,5 +1,6 @@
 package org.zerock.mallapi.controller;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +28,8 @@ public class TodoController {
 
 	@GetMapping("/{tno}")
 	public TodoDTO get(@PathVariable("tno") Long tno) {
-		return todoService.get(tno);
+		//return todoService.get(tno);
+		return TodoDTO.builder().writer("user00").title("hard title").content("hard content").tno(tno).complete(false).dueDate(LocalDate.now()).build();
 	}
 
 	@GetMapping("/list")

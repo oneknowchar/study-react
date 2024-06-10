@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TodoDTO {
 	private Long tno;
+	private String writer;
 	private String title;
 	private String content;
 	private boolean complete;

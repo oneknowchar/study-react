@@ -31,6 +31,7 @@ public class Todo {
 	private Long tno;
 	
 	@Column(length = 500, nullable = false)
+	private String writer;
 	private String title;
 	private String content;
 	private boolean complete;
