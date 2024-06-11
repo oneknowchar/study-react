@@ -13,7 +13,7 @@ const initState = {
 const ReadComponent = ({ tno }) => {
   const [todo, setTodo] = useState(initState); //아직 todo는 사용하지 않음
 
-  const { moveToList } = useCustomMove();
+  const { moveToList, moveToModify } = useCustomMove();
 
   useEffect(() => {
     getOne(tno).then((data) => {
@@ -40,13 +40,13 @@ const ReadComponent = ({ tno }) => {
           List
         </button>
 
-        {/* <button
+        <button
           type="button"
           className="rounded p-4 m-2 text-xl w-32 text-white bg-red-500"
-          onClick={() => moveToModify(tno)}
+          onClick={() => moveToModify(todo.tno)}
         >
           Modify
-        </button> */}
+        </button>
       </div>
     </div>
   );
