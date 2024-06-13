@@ -54,7 +54,17 @@ const useCustomMove = () => {
       search: queryDefault,
     });
   };
-  return { moveToList, moveToModify, page, size };
+
+  const moveToRead = (num) => {
+    console.log(queryDefault);
+
+    navigate({
+      pathname: `../read/${num}`,
+      search: queryDefault,
+    });
+  };
+
+  return { moveToList, moveToModify, moveToRead, page, size };
 };
 
 export default useCustomMove;
